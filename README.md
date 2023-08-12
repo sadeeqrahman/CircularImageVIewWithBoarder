@@ -17,6 +17,7 @@ allprojects {
 Step 2: Add the dependency
 
 ```gradle
-dependencies  { implementation 'com.github.sadeeqrahman:CircularImageVIewWithBoarder:1.0.0' }
+dependencies  { implementation 'com.github.sadeeqrahman:CircularImageVIewWithBoarder:1.1' }
 ```
-![Screenshot_2023-07-31-23-11-49-241_com sadeeq app circularimageviewwithboarder](https://github.com/sadeeqrahman/CircularImageVIewWithBoarder/assets/35709246/3e8c9807-fdb7-4fef-bdea-89660e8a6c33)
+
+![Screenshot_2023-08-12-14-37-00-001_com sadeeq app circularimageviewwithboarder](https://github.com/sadeeqrahman/CircularImageVIewWithBoarder/assets/35709246/2cdf2b49-3c06-4319-b1d1-68dda5b8a7d8)
