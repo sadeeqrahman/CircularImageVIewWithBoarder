@@ -1,7 +1,5 @@
 package com.sadeeq.app.circularimageviewwithboarder
 
-
-
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Canvas
@@ -16,14 +14,15 @@ class CircularImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : AppCompatImageView(context, attrs, defStyleAttr) {
     private val path = Path()
-    private val rect = RectF()
     private val borderPaint = Paint()
+    private val spacePaint = Paint()
 
     private var borderColor = Color.RED
     private var borderWidth = 5f
+    private var spaceBetweenBorderAndImage = 10f
+    private var spaceColor = Color.TRANSPARENT // Default transparent color
 
     init {
-        // Retrieve custom attributes from XML
         attrs?.let {
             val typedArray: TypedArray = context.obtainStyledAttributes(
                 it, R.styleable.CircularImageView, 0, 0
@@ -34,6 +33,12 @@ class CircularImageView @JvmOverloads constructor(
             borderWidth = typedArray.getDimension(
                 R.styleable.CircularImageView_borderWidth, 5f
             )
+            spaceBetweenBorderAndImage = typedArray.getDimension(
+                R.styleable.CircularImageView_spaceBetweenBorderAndImage, 10f
+            )
+            spaceColor = typedArray.getColor(
+                R.styleable.CircularImageView_spaceColor, Color.TRANSPARENT
+            )
             typedArray.recycle()
         }
 
@@ -43,22 +48,34 @@ class CircularImageView @JvmOverloads constructor(
             strokeWidth = borderWidth
             color = borderColor
         }
+
+        spacePaint.apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            color = spaceColor
+        }
     }
 
     override fun onDraw(canvas: Canvas?) {
         canvas?.let {
-            val radius = width.coerceAtMost(height) / 2f
-            path.reset()
-            rect.set(0f, 0f, width.toFloat(), height.toFloat())
-            path.addCircle(width / 2f, height / 2f, radius, Path.Direction.CW)
-            it.clipPath(path)
-            super.onDraw(it)
+            val centerX = width / 2f
+            val centerY = height / 2f
+            val radius = (width - borderWidth) / 2f
+
+            // Draw the space area (filled circle)
+            spacePaint.style = Paint.Style.FILL
+            it.drawCircle(centerX, centerY, radius - spaceBetweenBorderAndImage, spacePaint)
 
             // Draw the border
-            it.drawCircle(
-                width / 2f, height / 2f,
-                radius - borderPaint.strokeWidth / 2, borderPaint
-            )
+            borderPaint.style = Paint.Style.STROKE
+            it.drawCircle(centerX, centerY, radius, borderPaint)
+
+            // Clip the canvas to draw the image inside the border with space
+            path.reset()
+            path.addCircle(centerX, centerY, radius - spaceBetweenBorderAndImage, Path.Direction.CW)
+            it.clipPath(path)
+            super.onDraw(it)
         }
     }
+
 }

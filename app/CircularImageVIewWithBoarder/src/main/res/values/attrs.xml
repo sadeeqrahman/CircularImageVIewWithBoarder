@@ -3,5 +3,8 @@
     <declare-styleable name="CircularImageView">
         <attr name="borderColor" format="color" />
         <attr name="borderWidth" format="dimension" />
+        <attr name="spaceBetweenBorderAndImage" format="dimension" />
+        <attr name="spaceColor" format="color" />
     </declare-styleable>
 </resources>
+
